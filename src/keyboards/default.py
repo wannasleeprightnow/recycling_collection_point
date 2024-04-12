@@ -6,8 +6,5 @@ default_keyboard = (
     .row(
         KeyboardButton(text="Информация"),
         KeyboardButton(text="Задать вопрос")
-    )
-    .row(
-        KeyboardButton(text="Помощь"),
     ).adjust(2)
 )

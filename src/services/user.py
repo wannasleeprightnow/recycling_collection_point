@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from exceptions import UserNotExists
 from models.user import UserModel
 from repositories.user import UserRepository
@@ -7,7 +9,7 @@ user_repository = UserRepository()
 
 async def insert_one_user(telegram_username: str) -> UserModel:
     return await user_repository.insert_one(
-        {"telegram_username": telegram_username}
+        {"id": uuid4(), "telegram_username": telegram_username}
         )
 
 

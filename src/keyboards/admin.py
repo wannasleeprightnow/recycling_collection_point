@@ -8,6 +8,9 @@ admin_keyboard = (
         KeyboardButton(text="Отредактировать вывод команд")
     )
     .row(
+        KeyboardButton(text="Добавить мероприятие")
+    )
+    .row(
         KeyboardButton(text="Выйти")
     ).adjust(1)
 )

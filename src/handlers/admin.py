@@ -9,7 +9,12 @@ from exceptions import UserNotExists
 from keyboards.admin import admin_keyboard
 from keyboards.command import commands_builder
 from keyboards.default import default_keyboard
-from services.command import get_all_commands, get_command_by_start_input, update_command_output
+from services.command import (
+    get_all_commands,
+    get_command_by_start_input,
+    update_command_output
+)
+from services.event import insert_one_event
 from services.user import is_user_admin, set_user_admin
 
 router = Router()
@@ -22,6 +27,11 @@ class AdminUsername(StatesGroup):
 class NewOutputText(StatesGroup):
     command_id = State()
     new_output = State()
+
+
+class AddNewEvent(StatesGroup):
+    title = State()
+    event_description = State()
 
 
 @router.message(Command("admin"))
@@ -53,6 +63,7 @@ async def command_leave_admin_handler(message: Message, state: FSMContext) -> No
         "Вы вышли из режима администратора.",
         reply_markup=default_keyboard.as_markup(resize_keyboard=True)
         )
+    await state.clear()
 
 
 @router.message(AdminUsername.username)
@@ -102,7 +113,6 @@ async def set_new_output_text(message: Message, state: FSMContext):
     await state.update_data(new_output=message.text)
     if await is_user_admin(message.from_user.username):
         data = await state.get_data()
-        await state.clear()
         await update_command_output(**data)
         await message.answer("Команда успешно отредактирована.")
     else:
@@ -110,3 +120,38 @@ async def set_new_output_text(message: Message, state: FSMContext):
             "У вас отсутствуют права администратора.",
             reply_markup=default_keyboard.as_markup(resize_keyboard=True)
             )
+    await state.clear()
+
+
+@router.message(F.text == "Добавить мероприятие")
+async def command_get_new_event_title(message: Message, state: FSMContext):
+    await message.answer(
+        "Введите название мероприятия",
+        reply_markup=admin_keyboard.as_markup(resize_keyboard=True)
+        )
+    await state.set_state(AddNewEvent.title)
+
+
+@router.message(AddNewEvent.title)
+async def command_get_new_event_description(message: Message, state: FSMContext):
+    await state.update_data(title=message.text)
+    await message.answer(
+        "Введите описание мероприятия",
+        reply_markup=admin_keyboard.as_markup(resize_keyboard=True)
+        )
+    await state.set_state(AddNewEvent.event_description)
+
+
+@router.message(AddNewEvent.event_description)
+async def set_new_event(message: Message, state: FSMContext):
+    await state.update_data(event_description=message.text)
+    if await is_user_admin(message.from_user.username):
+        data = await state.get_data()
+        await insert_one_event(**data)
+        await message.answer("Добавлено новое мероприятие.")
+    else:
+        await message.answer(
+            "У вас отсутствуют права администратора.",
+            reply_markup=default_keyboard.as_markup(resize_keyboard=True)
+            )
+    await state.clear()

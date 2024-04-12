@@ -12,7 +12,7 @@ load_dotenv()
 class Settings:
     MODE: Literal["PROD", "DEV", "TEST"] = "DEV"
 
-    TOKEN_DEV_TEST_BOT: str = environ.get("TOKEN_DEV_TEST_BOT")
+    TOKEN_DEV_TEST_BOT: str = "6889866525:AAF2T2ik2grBYZvuyRT06REwCeIoA_N9wlM"
     TOKEN_PROD_BOT: str = environ.get("TOKEN_PROD_BOT")
 
     POSTGRES_USER: str = environ.get("POSTGRES_USER")

@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from sqlalchemy import insert, select
 
 from models.event import EventModel
@@ -20,8 +18,8 @@ class EventRepository(Repository):
                 await session.execute(stmt)
             await session.commit()
 
-    async def get_event_by_id(self, event_id: UUID) -> EventModel:
+    async def get_event_by_title(self, title: str) -> EventModel:
         async with async_session_maker() as session:
-            query = select(EventModel).where(EventModel.id == event_id)
+            query = select(EventModel).where(EventModel.title == title)
             result = await session.execute(query)
             return result.scalar_one()

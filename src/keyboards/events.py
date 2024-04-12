@@ -10,7 +10,7 @@ def events_builder(events: list[EventModel]) -> InlineKeyboardBuilder:
         builder.add(
             InlineKeyboardButton(
                 text=event.title,
-                callback_data="event_" + str(event.id),
+                callback_data="event_" + str(event.title),
             )
         )
     return builder

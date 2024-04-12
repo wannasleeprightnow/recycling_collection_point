@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from repositories.event import EventRepository
 from models.event import EventModel
 
@@ -15,5 +13,5 @@ async def insert_default_event_values():
         await event_repository.insert_default_events_values()
 
 
-async def get_event_by_id(event_id: UUID) -> EventModel:
-    return await event_repository.get_event_by_id(event_id)
+async def get_event_by_title(title: str) -> EventModel:
+    return await event_repository.get_event_by_title(title)

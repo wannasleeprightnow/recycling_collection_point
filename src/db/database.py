@@ -11,7 +11,6 @@ class Base(DeclarativeBase):
         return " ".join(cols)
 
 
-print(Settings.POSTGRES_DSN)
 async_engine = create_async_engine(Settings.POSTGRES_DSN, echo=False)
 
 async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)

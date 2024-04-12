@@ -3,5 +3,11 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 default_keyboard = (
     ReplyKeyboardBuilder()
-    .row(KeyboardButton(text="Информация"),).adjust(2)
+    .row(
+        KeyboardButton(text="Информация"),
+        KeyboardButton(text="Задать вопрос")
+    )
+    .row(
+        KeyboardButton(text="Помощь"),
+    ).adjust(2)
 )

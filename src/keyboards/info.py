@@ -11,8 +11,6 @@ info_keyboard = (
         KeyboardButton(text="Как правильно сдавать вторсырье?"))
     .row(
         KeyboardButton(text="Есть ли вознаграждение за сданное вторсырье?"),
-        KeyboardButton(text="Хотите посотрудничать?"))
-    .row(
-        KeyboardButton(text="Если не нашлось ответа на мой вопрос?"),
-        KeyboardButton(text="Назад"))
+        KeyboardButton(text="Назад")
+        )
     ).adjust(2)

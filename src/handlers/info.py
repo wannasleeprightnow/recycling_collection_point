@@ -5,7 +5,7 @@ from aiogram.types import Message, InputMediaPhoto, FSInputFile
 
 from keyboards.info import info_keyboard
 from keyboards.default import default_keyboard
-from services.command import get_command_output
+from services.command import get_command
 
 router = Router()
 
@@ -28,10 +28,11 @@ async def command_back_handler(message: Message) -> None:
 
 @router.message(F.text == "График работы.")
 async def command_how_work_handler(message: Message) -> None:
-    await message.answer(
-        await get_command_output(message.text),
-        reply_markup=info_keyboard.as_markup(resize_keyboard=True)
-        )
+    for address in (await get_command(message.text)).split("\n\n"):
+        await message.answer(
+            address,
+            reply_markup=info_keyboard.as_markup(resize_keyboard=True)
+            )
 
 
 @router.message(F.text == "Что можно сдать в пункт?")
@@ -65,22 +66,6 @@ async def command_take_it_correctly_handler(message: Message) -> None:
 @router.message(F.text == "Есть ли вознаграждение за сданное вторсырье?")
 async def command_reward_handler(message: Message) -> None:
     await message.answer(
-        await get_command_output(message.text),
+        await get_command(message.text),
         reply_markup=info_keyboard.as_markup(resize_keyboard=True)
-        )
-
-
-@router.message(F.text == "Хотите посотрудничать?")
-async def command_collaboration_handler(message: Message) -> None:
-    await message.answer(
-        await get_command_output(message.text),
-        reply_markup=info_keyboard.as_markup(resize_keyboard=True)
-        )
-
-
-@router.message(F.text == "Если не нашлось ответа на мой вопрос?")
-async def command_not_answer_handler(message: Message) -> None:
-    await message.answer(
-        await get_command_output(message.text),
-        reply_markup=default_keyboard.as_markup(resize_keyboard=True)
         )

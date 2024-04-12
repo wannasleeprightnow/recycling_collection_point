@@ -10,11 +10,9 @@ from services.command import (
 from services.event import (
     insert_default_event_values
 )
-from db.database import create_db
 
 
 async def main():
-    await create_db()
     await insert_default_command_values()
     await insert_default_event_values()
     include_routers()
